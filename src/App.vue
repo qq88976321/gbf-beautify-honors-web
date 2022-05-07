@@ -1,29 +1,52 @@
 <template>
   <div>
-    <b-editable-table
-      bordered
-      class="editable-table"
-      v-model="items"
-      :fields="fields"
-      @input-change="handleInput"
-    >
-      <template #cell(isActive)="data">
-        <span v-if="data.value">Yes</span>
-        <span v-else>No</span>
-      </template>
-    </b-editable-table>
-    <pre>{{ pretty(items) }}</pre>
+    <label for="basic-url">Current Honors</label>
+    <div class="input-group mb-3">
+      <input
+        type="number"
+        class="form-control"
+        id="current-honor"
+        v-model.lazy="current_honor"
+      />
+    </div>
+    <label for="basic-url">Expected Honors</label>
+    <div class="input-group mb-3">
+      <input
+        type="number"
+        class="form-control"
+        id="expected-honor"
+        v-model.lazy="expected_honor"
+      />
+    </div>
+    <div>
+      <b-editable-table
+        bordered
+        class="editable-table"
+        v-model.lazy="items"
+        :fields="fields"
+        @input-change="handleInput"
+      >
+        <template #cell(isActive)="data">
+          <span v-if="data.value">Yes</span>
+          <span v-else>No</span>
+        </template>
+      </b-editable-table>
+    </div>
   </div>
 </template>
 
 <script>
 import BEditableTable from "bootstrap-vue-editable-table";
+import GLPK from "glpk.js";
+
 export default {
   components: {
     BEditableTable,
   },
   data() {
     return {
+      current_honor: 1398542611,
+      expected_honor: 1400000000,
       fields: [
         {
           key: "action",
@@ -122,8 +145,60 @@ export default {
   },
   methods: {
     handleInput() {},
-    pretty(value) {
-      return JSON.stringify(value, undefined, 2);
+    async solve() {
+      const honor_diff = this.expected_honor - this.current_honor;
+
+      const glpk = await GLPK();
+
+      function print(res) {
+        if (res.result.status == glpk.GLP_OPT) {
+          console.log("Optimal solution found");
+          console.log(res.result.vars);
+        } else {
+          console.log(`No optimal solution, status = ${res.result.status}`);
+        }
+      }
+
+      const lp = {
+        name: "LP",
+        generals: this.items.map((item) => item.action),
+        objective: {
+          direction: glpk.GLP_MIN,
+          name: "obj",
+          vars: this.items.map((item) => ({
+            name: item.action,
+            coef: 1,
+          })),
+        },
+        subjectTo: [
+          {
+            name: "total",
+            vars: this.items.map((item) => ({
+              name: item.action,
+              coef: item.honors,
+            })),
+            bnds: { type: glpk.GLP_FX, ub: honor_diff, lb: honor_diff },
+          },
+          ...this.items.map((item) => ({
+            name: `max times of ${item.action}`,
+            vars: [{ name: item.action, coef: 1 }],
+            bnds: { type: glpk.GLP_DB, ub: item.max_times, lb: 0 },
+          })),
+        ],
+      };
+
+      return glpk
+        .solve(lp)
+        .then((res) => print(res))
+        .catch((err) => console.log(err));
+    },
+  },
+  watch: {
+    expected_honor: async function () {
+      await this.solve();
+    },
+    items: async function () {
+      await this.solve();
     },
   },
 };
