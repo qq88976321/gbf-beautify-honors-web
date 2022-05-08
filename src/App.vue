@@ -6,7 +6,7 @@
         type="number"
         class="form-control"
         id="current-honor"
-        v-model.lazy="current_honor"
+        v-model.lazy.number="current_honor"
       />
     </div>
     <label for="basic-url">Expected Honors</label>
@@ -15,14 +15,14 @@
         type="number"
         class="form-control"
         id="expected-honor"
-        v-model.lazy="expected_honor"
+        v-model.lazy.number="expected_honor"
       />
     </div>
     <div>
       <b-editable-table
         bordered
         class="editable-table"
-        v-model.lazy="items"
+        v-model="items"
         :fields="fields"
         @input-change="handleInput"
       >
@@ -38,6 +38,7 @@
 <script>
 import BEditableTable from "bootstrap-vue-editable-table";
 import GLPK from "glpk.js";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   components: {
@@ -45,6 +46,7 @@ export default {
   },
   data() {
     return {
+      solved: true,
       current_honor: 1398542611,
       expected_honor: 1400000000,
       fields: [
@@ -85,56 +87,56 @@ export default {
       ],
       items: [
         {
-          id: 1,
+          id: uuidv4(),
           action: "Eyeball N (0 button)",
           honors: 4000,
           max_times: 10,
           optimal_times: 0,
         },
         {
-          id: 2,
+          id: uuidv4(),
           action: "Eyeball H (0 button)",
           honors: 6000,
           max_times: 10,
           optimal_times: 0,
         },
         {
-          id: 3,
+          id: uuidv4(),
           action: "Eyeball VH (0 button)",
           honors: 8000,
           max_times: 10,
           optimal_times: 0,
         },
         {
-          id: 4,
+          id: uuidv4(),
           action: "Meat Beast VH (0 button)",
           honors: 21400,
           max_times: 30,
           optimal_times: 0,
         },
         {
-          id: 5,
+          id: uuidv4(),
           action: "Meat Beast EX (0 button)",
           honors: 50578,
           max_times: 30,
           optimal_times: 0,
         },
         {
-          id: 6,
+          id: uuidv4(),
           action: "Meat Beast EX+ (0 button)",
           honors: 80800,
           max_times: 30,
           optimal_times: 0,
         },
         {
-          id: 7,
+          id: uuidv4(),
           action: "Meat Beast EX+ (1 summon +)",
           honors: 80810,
           max_times: 30,
           optimal_times: 0,
         },
         {
-          id: 8,
+          id: uuidv4(),
           action: "Join raid and only use Break Assassin",
           honors: 1,
           max_times: 10,
@@ -149,15 +151,6 @@ export default {
       const honor_diff = this.expected_honor - this.current_honor;
 
       const glpk = await GLPK();
-
-      function print(res) {
-        if (res.result.status == glpk.GLP_OPT) {
-          console.log("Optimal solution found");
-          console.log(res.result.vars);
-        } else {
-          console.log(`No optimal solution, status = ${res.result.status}`);
-        }
-      }
 
       const lp = {
         name: "LP",
@@ -189,16 +182,40 @@ export default {
 
       return glpk
         .solve(lp)
-        .then((res) => print(res))
+        .then((res) => {
+          if (res.result.status == glpk.GLP_OPT) {
+            console.log("Optimal solution found");
+
+            // TODO: Can we do in place update? Learn how vue do list rendering.
+            this.items = this.items.map((item) => ({
+              id: item.id,
+              action: item.action,
+              honors: item.honors,
+              max_times: item.max_times,
+              optimal_times: res.result.vars[item.action],
+            }));
+          } else {
+            console.log(`No optimal solution, status = ${res.result.status}`);
+          }
+        })
         .catch((err) => console.log(err));
     },
   },
   watch: {
-    expected_honor: async function () {
-      await this.solve();
+    solved: async function (newValue) {
+      if (newValue === false) {
+        await this.solve();
+        this.solved = true;
+      }
+    },
+    current_honor: function () {
+      this.solved = false;
+    },
+    expected_honor: function () {
+      this.solved = false;
     },
     items: async function () {
-      await this.solve();
+      this.solved = false;
     },
   },
 };
