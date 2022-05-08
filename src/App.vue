@@ -1,11 +1,44 @@
 <template>
   <b-container>
     <div class="form-group-container">
-      <b-form-group label="Current Honors" label-for="current-honor">
-        <b-form-input id="current-honor" v-model.lazy.number="currentHonor" />
+      <b-form-group
+        :state="currentHonorsState"
+        :invalid-feedback="currentHonorsInvalidFeedback"
+        label="Current Honors"
+        label-for="current-honors"
+      >
+        <b-form-input
+          type="number"
+          id="current-honors"
+          :state="currentHonorsState"
+          v-model.lazy.number="currentHonors"
+        />
       </b-form-group>
-      <b-form-group label="Expected Honors" label-for="expected-honor">
-        <b-form-input id="expected-honor" v-model.lazy.number="expectedHonor" />
+      <b-form-group
+        :state="expectedHonorsState"
+        :invalid-feedback="expectedHonorsInvalidFeedback"
+        label="Expected Honors"
+        label-for="expected-honors"
+      >
+        <b-form-input
+          type="number"
+          id="expected-honors"
+          :state="expectedHonorsState"
+          v-model.lazy.number="expectedHonors"
+        />
+      </b-form-group>
+      <b-form-group
+        :state="diffHonorsState"
+        :invalid-feedback="diffHonorsInvalidFeedback"
+        label="How many honors do you need to get"
+        label-for="diff-honors"
+      >
+        <b-form-input
+          disabled
+          id="diff-honors"
+          :state="diffHonorsState"
+          :value="diffHonors"
+        ></b-form-input>
       </b-form-group>
     </div>
 
@@ -39,16 +72,64 @@ import GLPK from "glpk.js";
 import { v4 as uuidv4 } from "uuid";
 
 export default {
+  // FIXME: check life cycle
+  async created() {
+    await this.solve();
+    this.solved = true;
+  },
   components: {
     BEditableTable,
     BButton,
     BIconTrash,
   },
+  computed: {
+    diffHonors() {
+      return this.expectedHonors - this.currentHonors;
+    },
+    currentHonorsState() {
+      if (this.currentHonors >= 0 && this.currentHonors < 100000000000) {
+        return true;
+      }
+      return false;
+    },
+    currentHonorsInvalidFeedback() {
+      if (this.currentHonors < 0) {
+        return "Expected honors must be a positive integer";
+      }
+      if (this.currentHonors >= 100000000000) {
+        return "Expected honors must be less than 100 billion.";
+      }
+      return "";
+    },
+    expectedHonorsState() {
+      if (this.expectedHonors >= 0 && this.expectedHonors < 100000000000) {
+        return true;
+      }
+      return false;
+    },
+    expectedHonorsInvalidFeedback() {
+      if (this.expectedHonors < 0) {
+        return "Expected honors must be a positive integer";
+      }
+      if (this.expectedHonors >= 100000000000) {
+        return "Expected honors must be less than 100 billion.";
+      }
+      return "";
+    },
+    diffHonorsState() {
+      return this.hasSolution;
+    },
+    diffHonorsInvalidFeedback() {
+      return "There is no solution to achieve the expected honors. Please relax the constraints and try again.";
+    },
+  },
   data() {
     return {
-      solved: true,
-      currentHonor: 0,
-      expectedHonor: 0,
+      // FIXME: refine solve state machine
+      solved: false,
+      hasSolution: false,
+      currentHonors: 0,
+      expectedHonors: 0,
       fields: [
         { key: "delete", label: "" },
         {
@@ -93,7 +174,6 @@ export default {
           honors: 4000,
           maxTimes: 10,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -101,7 +181,6 @@ export default {
           honors: 6000,
           maxTimes: 10,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -109,7 +188,6 @@ export default {
           honors: 8000,
           maxTimes: 10,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -117,7 +195,6 @@ export default {
           honors: 21400,
           maxTimes: 30,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -125,7 +202,6 @@ export default {
           honors: 50578,
           maxTimes: 30,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -133,7 +209,6 @@ export default {
           honors: 80800,
           maxTimes: 30,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -141,7 +216,6 @@ export default {
           honors: 80810,
           maxTimes: 30,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -149,7 +223,6 @@ export default {
           honors: 1,
           maxTimes: 10,
           optimalTimes: "-",
-          _cellVariants: { optimalTimes: "warning" },
         },
       ],
       rowUpdate: {},
@@ -177,7 +250,7 @@ export default {
       this.rowUpdate = { id: data.id, action: "delete" };
     },
     async solve() {
-      const honorDiff = this.expectedHonor - this.currentHonor;
+      const honorDiff = this.expectedHonors - this.currentHonors;
 
       const glpk = await GLPK();
 
@@ -225,6 +298,7 @@ export default {
               optimalTimes: res.result.vars[item.id],
               _cellVariants: { optimalTimes: "info" },
             }));
+            this.hasSolution = true;
           } else {
             console.log(`No optimal solution, status = ${res.result.status}`);
             this.items = this.items.map((item) => ({
@@ -233,8 +307,9 @@ export default {
               honors: item.honors,
               maxTimes: item.maxTimes,
               optimalTimes: "-",
-              _cellVariants: { optimalTimes: "warning" },
+              _cellVariants: { optimalTimes: "danger" },
             }));
+            this.hasSolution = false;
           }
         })
         .catch((err) => console.log(err));
@@ -247,14 +322,17 @@ export default {
         this.solved = true;
       }
     },
-    currentHonor: function () {
+    currentHonors: function () {
       this.solved = false;
+      this.hasSolution = false;
     },
-    expectedHonor: function () {
+    expectedHonors: function () {
       this.solved = false;
+      this.hasSolution = false;
     },
     items: async function () {
       this.solved = false;
+      this.hasSolution = false;
     },
   },
 };
