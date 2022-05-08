@@ -6,7 +6,7 @@
         type="number"
         class="form-control"
         id="current-honor"
-        v-model.lazy.number="current_honor"
+        v-model.lazy.number="currentHonor"
       />
     </div>
     <label for="basic-url">Expected Honors</label>
@@ -15,7 +15,7 @@
         type="number"
         class="form-control"
         id="expected-honor"
-        v-model.lazy.number="expected_honor"
+        v-model.lazy.number="expectedHonor"
       />
     </div>
 
@@ -55,8 +55,8 @@ export default {
   data() {
     return {
       solved: true,
-      current_honor: 1398542611,
-      expected_honor: 1400000000,
+      currentHonor: 1398542611,
+      expectedHonor: 1400000000,
       fields: [
         { key: "delete", label: "" },
         {
@@ -77,7 +77,7 @@ export default {
           class: "honors-col",
         },
         {
-          key: "max_times",
+          key: "maxTimes",
           label: "Max times",
           type: "number",
           min: "0",
@@ -87,7 +87,7 @@ export default {
           class: "max-times-col",
         },
         {
-          key: "optimal_times",
+          key: "optimalTimes",
           label: "Optimal times",
           type: "number",
           editable: false,
@@ -99,57 +99,57 @@ export default {
           id: uuidv4(),
           action: "Eyeball N (0 button)",
           honors: 4000,
-          max_times: 10,
-          optimal_times: "-",
+          maxTimes: 10,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Eyeball H (0 button)",
           honors: 6000,
-          max_times: 10,
-          optimal_times: "-",
+          maxTimes: 10,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Eyeball VH (0 button)",
           honors: 8000,
-          max_times: 10,
-          optimal_times: "-",
+          maxTimes: 10,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast VH (0 button)",
           honors: 21400,
-          max_times: 30,
-          optimal_times: "-",
+          maxTimes: 30,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX (0 button)",
           honors: 50578,
-          max_times: 30,
-          optimal_times: "-",
+          maxTimes: 30,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX+ (0 button)",
           honors: 80800,
-          max_times: 30,
-          optimal_times: "-",
+          maxTimes: 30,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX+ (1 summon +)",
           honors: 80810,
-          max_times: 30,
-          optimal_times: "-",
+          maxTimes: 30,
+          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Join raid and only use Break Assassin",
           honors: 1,
-          max_times: 10,
-          optimal_times: "-",
+          maxTimes: 10,
+          optimalTimes: "-",
         },
       ],
       rowUpdate: {},
@@ -167,8 +167,8 @@ export default {
           id: id,
           action: "New Action",
           honors: 0,
-          max_times: 10,
-          optimal_times: "-",
+          maxTimes: 10,
+          optimalTimes: "-",
         },
       };
     },
@@ -176,7 +176,7 @@ export default {
       this.rowUpdate = { id: data.id, action: "delete" };
     },
     async solve() {
-      const honor_diff = this.expected_honor - this.current_honor;
+      const honorDiff = this.expectedHonor - this.currentHonor;
 
       const glpk = await GLPK();
 
@@ -198,13 +198,13 @@ export default {
               name: item.id,
               coef: item.honors,
             })),
-            bnds: { type: glpk.GLP_FX, ub: honor_diff, lb: honor_diff },
+            bnds: { type: glpk.GLP_FX, ub: honorDiff, lb: honorDiff },
           },
-          // FIXME: allow max_times=0
+          // FIXME: allow maxTimes=0
           ...this.items.map((item) => ({
             name: `max times of ${item.id}, action name=${item.action}`,
             vars: [{ name: item.id, coef: 1 }],
-            bnds: { type: glpk.GLP_DB, ub: item.max_times, lb: 0 },
+            bnds: { type: glpk.GLP_DB, ub: item.maxTimes, lb: 0 },
           })),
         ],
       };
@@ -220,8 +220,8 @@ export default {
               id: item.id,
               action: item.action,
               honors: item.honors,
-              max_times: item.max_times,
-              optimal_times: res.result.vars[item.id],
+              maxTimes: item.maxTimes,
+              optimalTimes: res.result.vars[item.id],
             }));
           } else {
             console.log(`No optimal solution, status = ${res.result.status}`);
@@ -229,8 +229,8 @@ export default {
               id: item.id,
               action: item.action,
               honors: item.honors,
-              max_times: item.max_times,
-              optimal_times: "-",
+              maxTimes: item.maxTimes,
+              optimalTimes: "-",
             }));
           }
         })
@@ -244,10 +244,10 @@ export default {
         this.solved = true;
       }
     },
-    current_honor: function () {
+    currentHonor: function () {
       this.solved = false;
     },
-    expected_honor: function () {
+    expectedHonor: function () {
       this.solved = false;
     },
     items: async function () {
