@@ -1,26 +1,18 @@
 <template>
-  <div>
-    <label for="basic-url">Current Honors</label>
-    <div class="input-group mb-3">
-      <input
-        type="number"
-        class="form-control"
-        id="current-honor"
-        v-model.lazy.number="currentHonor"
-      />
-    </div>
-    <label for="basic-url">Expected Honors</label>
-    <div class="input-group mb-3">
-      <input
-        type="number"
-        class="form-control"
-        id="expected-honor"
-        v-model.lazy.number="expectedHonor"
-      />
+  <b-container>
+    <div class="form-group-container">
+      <b-form-group label="Current Honors" label-for="current-honor">
+        <b-form-input id="current-honor" v-model.lazy.number="currentHonor" />
+      </b-form-group>
+      <b-form-group label="Expected Honors" label-for="expected-honor">
+        <b-form-input id="expected-honor" v-model.lazy.number="expectedHonor" />
+      </b-form-group>
     </div>
 
     <div class="table-container">
-      <b-button variant="success" @click="handleAdd()">Add</b-button>
+      <b-button variant="primary" class="button-add-action" @click="handleAdd()"
+        >Add Action</b-button
+      >
       <b-editable-table
         :rowUpdate="rowUpdate"
         bordered
@@ -37,7 +29,7 @@
         </template>
       </b-editable-table>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -101,6 +93,7 @@ export default {
           honors: 4000,
           maxTimes: 10,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -108,6 +101,7 @@ export default {
           honors: 6000,
           maxTimes: 10,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -115,6 +109,7 @@ export default {
           honors: 8000,
           maxTimes: 10,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -122,6 +117,7 @@ export default {
           honors: 21400,
           maxTimes: 30,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -129,6 +125,7 @@ export default {
           honors: 50578,
           maxTimes: 30,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -136,6 +133,7 @@ export default {
           honors: 80800,
           maxTimes: 30,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -143,6 +141,7 @@ export default {
           honors: 80810,
           maxTimes: 30,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
         {
           id: uuidv4(),
@@ -150,6 +149,7 @@ export default {
           honors: 1,
           maxTimes: 10,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "warning" },
         },
       ],
       rowUpdate: {},
@@ -169,6 +169,7 @@ export default {
           honors: 0,
           maxTimes: 10,
           optimalTimes: "-",
+          _cellVariants: { optimalTimes: "info" },
         },
       };
     },
@@ -222,6 +223,7 @@ export default {
               honors: item.honors,
               maxTimes: item.maxTimes,
               optimalTimes: res.result.vars[item.id],
+              _cellVariants: { optimalTimes: "info" },
             }));
           } else {
             console.log(`No optimal solution, status = ${res.result.status}`);
@@ -231,6 +233,7 @@ export default {
               honors: item.honors,
               maxTimes: item.maxTimes,
               optimalTimes: "-",
+              _cellVariants: { optimalTimes: "warning" },
             }));
           }
         })
@@ -258,8 +261,17 @@ export default {
 </script>
 
 <style>
+.table-container {
+  margin-top: 20px;
+}
+
 table.editable-table {
-  margin: auto;
+  margin-top: 10px;
+}
+
+table.editable-table thead {
+  background-color: aliceblue;
+  font-weight: bold;
 }
 
 table.editable-table td {
@@ -271,10 +283,6 @@ table.editable-table td {
   display: block;
 }
 
-.editable-table .custom-checkbox {
-  width: 50px;
-}
-
 .remove-icon {
   color: red;
   cursor: pointer;
@@ -282,21 +290,21 @@ table.editable-table td {
 }
 
 .action-col {
-  width: 400px;
+  width: 40%;
 }
 
 .honors-col {
-  width: 150px;
+  width: 20%;
   text-align: right;
 }
 
 .max-times-col {
-  width: 150px;
+  width: 20%;
   text-align: right;
 }
 
 .optimal-times-col {
-  width: 150px;
+  width: 20%;
   text-align: right;
 }
 
