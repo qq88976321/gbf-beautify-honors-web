@@ -47,8 +47,8 @@ export default {
   data() {
     return {
       solved: true,
-      currentHonor: 1398542611,
-      expectedHonor: 1400000000,
+      currentHonor: 0,
+      expectedHonor: 0,
       fields: [
         { key: "delete", label: "" },
         {
