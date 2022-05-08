@@ -29,6 +29,12 @@
         :fields="fields"
         @input-change="handleInput"
       >
+        <template #cell(delete)="data">
+          <BIconTrash
+            class="remove-icon"
+            @click="handleDelete(data)"
+          ></BIconTrash>
+        </template>
       </b-editable-table>
     </div>
   </div>
@@ -36,7 +42,7 @@
 
 <script>
 import BEditableTable from "bootstrap-vue-editable-table";
-import { BButton } from "bootstrap-vue";
+import { BButton, BIconTrash } from "bootstrap-vue";
 import GLPK from "glpk.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -44,6 +50,7 @@ export default {
   components: {
     BEditableTable,
     BButton,
+    BIconTrash,
   },
   data() {
     return {
@@ -51,6 +58,7 @@ export default {
       current_honor: 1398542611,
       expected_honor: 1400000000,
       fields: [
+        { key: "delete", label: "" },
         {
           key: "action",
           label: "Action",
@@ -164,6 +172,9 @@ export default {
         },
       };
     },
+    handleDelete(data) {
+      this.rowUpdate = { id: data.id, action: "delete" };
+    },
     async solve() {
       const honor_diff = this.expected_honor - this.current_honor;
 
@@ -262,6 +273,12 @@ table.editable-table td {
 
 .editable-table .custom-checkbox {
   width: 50px;
+}
+
+.remove-icon {
+  color: red;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .action-col {
