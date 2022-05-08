@@ -91,56 +91,56 @@ export default {
           action: "Eyeball N (0 button)",
           honors: 4000,
           max_times: 10,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Eyeball H (0 button)",
           honors: 6000,
           max_times: 10,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Eyeball VH (0 button)",
           honors: 8000,
           max_times: 10,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast VH (0 button)",
           honors: 21400,
           max_times: 30,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX (0 button)",
           honors: 50578,
           max_times: 30,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX+ (0 button)",
           honors: 80800,
           max_times: 30,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX+ (1 summon +)",
           honors: 80810,
           max_times: 30,
-          optimal_times: 0,
+          optimal_times: "-",
         },
         {
           id: uuidv4(),
           action: "Join raid and only use Break Assassin",
           honors: 1,
           max_times: 10,
-          optimal_times: 0,
+          optimal_times: "-",
         },
       ],
     };
@@ -196,6 +196,13 @@ export default {
             }));
           } else {
             console.log(`No optimal solution, status = ${res.result.status}`);
+            this.items = this.items.map((item) => ({
+              id: item.id,
+              action: item.action,
+              honors: item.honors,
+              max_times: item.max_times,
+              optimal_times: "-",
+            }));
           }
         })
         .catch((err) => console.log(err));
