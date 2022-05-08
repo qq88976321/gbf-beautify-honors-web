@@ -18,18 +18,17 @@
         v-model.lazy.number="expected_honor"
       />
     </div>
-    <div>
+
+    <div class="table-container">
+      <b-button variant="success" @click="handleAdd()">Add</b-button>
       <b-editable-table
+        :rowUpdate="rowUpdate"
         bordered
         class="editable-table"
         v-model="items"
         :fields="fields"
         @input-change="handleInput"
       >
-        <template #cell(isActive)="data">
-          <span v-if="data.value">Yes</span>
-          <span v-else>No</span>
-        </template>
       </b-editable-table>
     </div>
   </div>
@@ -37,12 +36,14 @@
 
 <script>
 import BEditableTable from "bootstrap-vue-editable-table";
+import { BButton } from "bootstrap-vue";
 import GLPK from "glpk.js";
 import { v4 as uuidv4 } from "uuid";
 
 export default {
   components: {
     BEditableTable,
+    BButton,
   },
   data() {
     return {
@@ -143,10 +144,26 @@ export default {
           optimal_times: "-",
         },
       ],
+      rowUpdate: {},
     };
   },
   methods: {
     handleInput() {},
+    handleAdd() {
+      const id = uuidv4();
+      this.rowUpdate = {
+        edit: true,
+        id: id,
+        action: "add",
+        data: {
+          id: id,
+          action: "New Action",
+          honors: 0,
+          max_times: 10,
+          optimal_times: "-",
+        },
+      };
+    },
     async solve() {
       const honor_diff = this.expected_honor - this.current_honor;
 
@@ -154,12 +171,12 @@ export default {
 
       const lp = {
         name: "LP",
-        generals: this.items.map((item) => item.action),
+        generals: this.items.map((item) => item.id),
         objective: {
           direction: glpk.GLP_MIN,
           name: "obj",
           vars: this.items.map((item) => ({
-            name: item.action,
+            name: item.id,
             coef: 1,
           })),
         },
@@ -167,14 +184,15 @@ export default {
           {
             name: "total",
             vars: this.items.map((item) => ({
-              name: item.action,
+              name: item.id,
               coef: item.honors,
             })),
             bnds: { type: glpk.GLP_FX, ub: honor_diff, lb: honor_diff },
           },
+          // FIXME: allow max_times=0
           ...this.items.map((item) => ({
-            name: `max times of ${item.action}`,
-            vars: [{ name: item.action, coef: 1 }],
+            name: `max times of ${item.id}, action name=${item.action}`,
+            vars: [{ name: item.id, coef: 1 }],
             bnds: { type: glpk.GLP_DB, ub: item.max_times, lb: 0 },
           })),
         ],
@@ -192,7 +210,7 @@ export default {
               action: item.action,
               honors: item.honors,
               max_times: item.max_times,
-              optimal_times: res.result.vars[item.action],
+              optimal_times: res.result.vars[item.id],
             }));
           } else {
             console.log(`No optimal solution, status = ${res.result.status}`);
