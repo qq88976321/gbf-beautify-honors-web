@@ -13,6 +13,7 @@
     "bootstrap-vue-editable-table": "^0.1.6",
     "core-js": "^3.8.3",
     "glpk.js": "^4.0.1",
+    "uuid": "^8.3.2",
     "vue": "^2.6.14"
   },
   "devDependencies": {
