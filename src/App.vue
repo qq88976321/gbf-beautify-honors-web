@@ -1,74 +1,94 @@
 <template>
-  <b-container>
-    <div class="form-group-container">
-      <b-form-group
-        :state="currentHonorsState"
-        :invalid-feedback="currentHonorsInvalidFeedback"
-        label="Current Honors"
-        label-for="current-honors"
+  <div>
+    <!-- As a heading -->
+    <b-navbar variant="primary" type="dark">
+      <b-navbar-brand tag="h1" class="mb-0"
+        >Granblue Fantasy - Beautify Honors</b-navbar-brand
       >
-        <b-form-input
-          type="number"
-          id="current-honors"
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-navbar-brand
+          href="https://github.com/qq88976321/gbf-beautify-honors-web"
+        >
+          <b-icon icon="github"></b-icon>
+        </b-navbar-brand>
+      </b-navbar-nav>
+    </b-navbar>
+
+    <b-container>
+      <div class="form-group-container">
+        <b-form-group
           :state="currentHonorsState"
-          v-model.lazy.number="currentHonors"
-        />
-      </b-form-group>
-      <b-form-group
-        :state="expectedHonorsState"
-        :invalid-feedback="expectedHonorsInvalidFeedback"
-        label="Expected Honors"
-        label-for="expected-honors"
-      >
-        <b-form-input
-          type="number"
-          id="expected-honors"
+          :invalid-feedback="currentHonorsInvalidFeedback"
+          label="Current Honors"
+          label-for="current-honors"
+        >
+          <b-form-input
+            type="number"
+            id="current-honors"
+            :state="currentHonorsState"
+            v-model.lazy.number="currentHonors"
+          />
+        </b-form-group>
+        <b-form-group
           :state="expectedHonorsState"
-          v-model.lazy.number="expectedHonors"
-        />
-      </b-form-group>
-      <b-form-group
-        :state="diffHonorsState"
-        :invalid-feedback="diffHonorsInvalidFeedback"
-        label="How many honors do you need to get"
-        label-for="diff-honors"
-      >
-        <b-form-input
-          disabled
-          id="diff-honors"
+          :invalid-feedback="expectedHonorsInvalidFeedback"
+          label="Expected Honors"
+          label-for="expected-honors"
+        >
+          <b-form-input
+            type="number"
+            id="expected-honors"
+            :state="expectedHonorsState"
+            v-model.lazy.number="expectedHonors"
+          />
+        </b-form-group>
+        <b-form-group
           :state="diffHonorsState"
-          :value="diffHonors"
-        ></b-form-input>
-      </b-form-group>
-    </div>
+          :invalid-feedback="diffHonorsInvalidFeedback"
+          label="How many honors do you need to get"
+          label-for="diff-honors"
+        >
+          <b-form-input
+            disabled
+            id="diff-honors"
+            :state="diffHonorsState"
+            :value="diffHonors"
+          ></b-form-input>
+        </b-form-group>
+      </div>
 
-    <div class="table-container">
-      <b-button variant="primary" class="button-add-action" @click="handleAdd()"
-        >Add Action</b-button
-      >
-      <b-editable-table
-        :rowUpdate="rowUpdate"
-        bordered
-        class="editable-table"
-        v-model="items"
-        :fields="fields"
-        @input-change="handleInput"
-      >
-        <!-- A virtual column to show delete button-->
-        <template #cell(delete)="data">
-          <BIconTrash
-            class="remove-icon"
-            @click="handleDelete(data)"
-          ></BIconTrash>
-        </template>
+      <div class="table-container">
+        <b-button
+          variant="primary"
+          class="button-add-action"
+          @click="handleAdd()"
+          >Add Action</b-button
+        >
+        <b-editable-table
+          :rowUpdate="rowUpdate"
+          bordered
+          class="editable-table"
+          v-model="items"
+          :fields="fields"
+          @input-change="handleInput"
+        >
+          <!-- A virtual column to show delete button-->
+          <template #cell(delete)="data">
+            <BIconTrash
+              class="remove-icon"
+              @click="handleDelete(data)"
+            ></BIconTrash>
+          </template>
 
-        <!-- A virtual column to show optimal value-->
-        <template #cell(optimal)="data">
-          {{ optimalTimes[data.index] }}
-        </template>
-      </b-editable-table>
-    </div>
-  </b-container>
+          <!-- A virtual column to show optimal value-->
+          <template #cell(optimal)="data">
+            {{ optimalTimes[data.index] }}
+          </template>
+        </b-editable-table>
+      </div>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -325,6 +345,10 @@ export default {
 </script>
 
 <style>
+.form-group-container {
+  margin-top: 20px;
+}
+
 .table-container {
   margin-top: 20px;
 }
