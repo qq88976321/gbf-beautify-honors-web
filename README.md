@@ -11,6 +11,16 @@ A static web page to help you figure out how to beautify honors in the Guild War
 
 ## Table of contents
 <!--ts-->
+* [Granblue Fantasy - Beautify Honors (Web)](#granblue-fantasy---beautify-honors-web)
+   * [Table of contents](#table-of-contents)
+   * [Notice](#notice)
+   * [How it works](#how-it-works)
+   * [How to develop](#how-to-develop)
+      * [Project setup](#project-setup)
+         * [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
+         * [Compiles and minifies for production](#compiles-and-minifies-for-production)
+      * [Lints and fixes files](#lints-and-fixes-files)
+         * [Customize configuration](#customize-configuration)
 <!--te-->
 
 ## Notice
