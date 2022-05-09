@@ -169,7 +169,7 @@ export default {
           type: "number",
           editable: false,
           class: "optimal-times-col",
-          // variant: "info",
+          variant: "",
         },
       ],
       items: [
@@ -312,6 +312,13 @@ export default {
     },
     items: async function () {
       await this.solve();
+    },
+    hasSolution: function () {
+      if (this.hasSolution) {
+        this.fields[this.fields.length - 1].variant = "info";
+      } else {
+        this.fields[this.fields.length - 1].variant = "danger";
+      }
     },
   },
 };
