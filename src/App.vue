@@ -99,6 +99,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default {
   async created() {
+    this.glpk = await GLPK();
     await this.solve();
   },
   components: {
@@ -149,6 +150,7 @@ export default {
   },
   data() {
     return {
+      glpk: null,
       hasSolution: false,
       currentHonors: 0,
       expectedHonors: 0,
@@ -269,13 +271,11 @@ export default {
     async solve() {
       const honorDiff = this.expectedHonors - this.currentHonors;
 
-      const glpk = await GLPK();
-
       const lp = {
         name: "LP",
         generals: this.items.map((item) => item.id),
         objective: {
-          direction: glpk.GLP_MIN,
+          direction: this.glpk.GLP_MIN,
           name: "obj",
           vars: this.items.map((item) => ({
             name: item.id,
@@ -289,7 +289,7 @@ export default {
               name: item.id,
               coef: item.honors,
             })),
-            bnds: { type: glpk.GLP_FX, ub: honorDiff, lb: honorDiff },
+            bnds: { type: this.glpk.GLP_FX, ub: honorDiff, lb: honorDiff },
           },
           ...this.items.map((item) => ({
             name: `max times of ${item.id}, action name=${item.action}`,
@@ -297,16 +297,20 @@ export default {
             bnds:
               // maxTimes is string
               item.maxTimes == 0
-                ? { type: glpk.GLP_FX, ub: 0, lb: 0 }
-                : { type: glpk.GLP_DB, ub: parseInt(item.maxTimes), lb: 0 },
+                ? { type: this.glpk.GLP_FX, ub: 0, lb: 0 }
+                : {
+                    type: this.glpk.GLP_DB,
+                    ub: parseInt(item.maxTimes),
+                    lb: 0,
+                  },
           })),
         ],
       };
 
-      return glpk
+      return this.glpk
         .solve(lp)
         .then((res) => {
-          if (res.result.status == glpk.GLP_OPT) {
+          if (res.result.status == this.glpk.GLP_OPT) {
             console.log("Optimal solution found");
 
             this.optimalTimes = this.items.map(
