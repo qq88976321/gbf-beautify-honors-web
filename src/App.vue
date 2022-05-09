@@ -54,11 +54,17 @@
         :fields="fields"
         @input-change="handleInput"
       >
+        <!-- A virtual column to show delete button-->
         <template #cell(delete)="data">
           <BIconTrash
             class="remove-icon"
             @click="handleDelete(data)"
           ></BIconTrash>
+        </template>
+
+        <!-- A virtual column to show optimal value-->
+        <template #cell(optimal)="data">
+          {{ optimalTimes[data.index] }}
         </template>
       </b-editable-table>
     </div>
@@ -72,10 +78,8 @@ import GLPK from "glpk.js";
 import { v4 as uuidv4 } from "uuid";
 
 export default {
-  // FIXME: check life cycle
   async created() {
     await this.solve();
-    this.solved = true;
   },
   components: {
     BEditableTable,
@@ -125,12 +129,11 @@ export default {
   },
   data() {
     return {
-      // FIXME: refine solve state machine
-      solved: false,
       hasSolution: false,
       currentHonors: 0,
       expectedHonors: 0,
       fields: [
+        // A virtual column that doesn't exist in items
         { key: "delete", label: "" },
         {
           key: "action",
@@ -159,12 +162,14 @@ export default {
           placeholder: "Enter Max times...",
           class: "max-times-col",
         },
+        // A virtual column that doesn't exist in items
         {
-          key: "optimalTimes",
+          key: "optimal",
           label: "Optimal times",
           type: "number",
           editable: false,
           class: "optimal-times-col",
+          // variant: "info",
         },
       ],
       items: [
@@ -173,58 +178,52 @@ export default {
           action: "Eyeball N (0 button)",
           honors: 4000,
           maxTimes: 10,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Eyeball H (0 button)",
           honors: 6000,
           maxTimes: 10,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Eyeball VH (0 button)",
           honors: 8000,
           maxTimes: 10,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast VH (0 button)",
           honors: 21400,
           maxTimes: 30,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX (0 button)",
           honors: 50578,
           maxTimes: 30,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX+ (0 button)",
           honors: 80800,
           maxTimes: 30,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Meat Beast EX+ (1 summon +)",
           honors: 80810,
           maxTimes: 30,
-          optimalTimes: "-",
         },
         {
           id: uuidv4(),
           action: "Join raid and only use Break Assassin",
           honors: 1,
           maxTimes: 10,
-          optimalTimes: "-",
         },
       ],
+      // FIXME: don't hardcode length
+      optimalTimes: Array(7).fill("-"),
       rowUpdate: {},
     };
   },
@@ -233,7 +232,7 @@ export default {
     handleAdd() {
       const id = uuidv4();
       this.rowUpdate = {
-        edit: true,
+        edit: false,
         id: id,
         action: "add",
         data: {
@@ -241,8 +240,6 @@ export default {
           action: "New Action",
           honors: 0,
           maxTimes: 10,
-          optimalTimes: "-",
-          _cellVariants: { optimalTimes: "info" },
         },
       };
     },
@@ -292,26 +289,14 @@ export default {
           if (res.result.status == glpk.GLP_OPT) {
             console.log("Optimal solution found");
 
-            // TODO: Can we do in place update? Learn how vue do list rendering.
-            this.items = this.items.map((item) => ({
-              id: item.id,
-              action: item.action,
-              honors: item.honors,
-              maxTimes: item.maxTimes,
-              optimalTimes: res.result.vars[item.id],
-              _cellVariants: { optimalTimes: "info" },
-            }));
+            this.optimalTimes = this.items.map(
+              (item) => res.result.vars[item.id]
+            );
             this.hasSolution = true;
           } else {
             console.log(`No optimal solution, status = ${res.result.status}`);
-            this.items = this.items.map((item) => ({
-              id: item.id,
-              action: item.action,
-              honors: item.honors,
-              maxTimes: item.maxTimes,
-              optimalTimes: "-",
-              _cellVariants: { optimalTimes: "danger" },
-            }));
+
+            this.optimalTimes = this.items.map(() => "-");
             this.hasSolution = false;
           }
         })
@@ -319,23 +304,14 @@ export default {
     },
   },
   watch: {
-    solved: async function (newValue) {
-      if (newValue === false) {
-        await this.solve();
-        this.solved = true;
-      }
+    currentHonors: async function () {
+      await this.solve();
     },
-    currentHonors: function () {
-      this.solved = false;
-      this.hasSolution = false;
-    },
-    expectedHonors: function () {
-      this.solved = false;
-      this.hasSolution = false;
+    expectedHonors: async function () {
+      await this.solve();
     },
     items: async function () {
-      this.solved = false;
-      this.hasSolution = false;
+      await this.solve();
     },
   },
 };
@@ -387,6 +363,7 @@ table.editable-table td {
 .optimal-times-col {
   width: 20%;
   text-align: right;
+  font-weight: bold;
 }
 
 /* Remove Arrows/Spinners */
