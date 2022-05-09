@@ -3,9 +3,9 @@
 ![vue version](https://img.shields.io/badge/vue-2.6.14-brightgreen)
 ![bootstrap-vue version](https://img.shields.io/badge/bootstrap--vue-2.22.0-brightgreen)
 ![stage](https://img.shields.io/badge/stage-pre--alpha-brightgreen)
-![license](https://img.shields.io/github/license/qq88976321/https://github.com/qq88976321/gbf-beautify-honors-web)
+![license](https://img.shields.io/github/license/qq88976321/gbf-beautify-honors-web)
 
-<!-- TODO: demo site -->
+[Live demo](https://qq88976321.github.io/gbf-beautify-honors-web/)
 
 A static web page to help you figure out how to beautify honors in the Guild War event. (古戦場の貢献度調整)
 
