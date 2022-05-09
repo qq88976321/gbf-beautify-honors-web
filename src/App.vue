@@ -274,11 +274,14 @@ export default {
             })),
             bnds: { type: glpk.GLP_FX, ub: honorDiff, lb: honorDiff },
           },
-          // FIXME: allow maxTimes=0
           ...this.items.map((item) => ({
             name: `max times of ${item.id}, action name=${item.action}`,
             vars: [{ name: item.id, coef: 1 }],
-            bnds: { type: glpk.GLP_DB, ub: item.maxTimes, lb: 0 },
+            bnds:
+              // maxTimes is string
+              item.maxTimes == 0
+                ? { type: glpk.GLP_FX, ub: 0, lb: 0 }
+                : { type: glpk.GLP_DB, ub: parseInt(item.maxTimes), lb: 0 },
           })),
         ],
       };
