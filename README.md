@@ -2,26 +2,27 @@
 
 ![vue version](https://img.shields.io/badge/vue-2.6.14-brightgreen)
 ![bootstrap-vue version](https://img.shields.io/badge/bootstrap--vue-2.22.0-brightgreen)
+![stage](https://img.shields.io/badge/stage-pre--alpha-brightgreen)
 ![license](https://img.shields.io/github/license/qq88976321/https://github.com/qq88976321/gbf-beautify-honors-web)
 
 <!-- TODO: demo site -->
+
 A static web page to help you figure out how to beautify honors in the Guild War event. (古戦場の貢献度調整)
 
 ![demo_sample](demo_sample.png)
 
 ## Table of contents
-<!--ts-->
-* [Granblue Fantasy - Beautify Honors (Web)](#granblue-fantasy---beautify-honors-web)
-   * [Table of contents](#table-of-contents)
-   * [Notice](#notice)
-   * [How it works](#how-it-works)
-   * [How to develop](#how-to-develop)
-      * [Project setup](#project-setup)
-         * [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
-         * [Compiles and minifies for production](#compiles-and-minifies-for-production)
-      * [Lints and fixes files](#lints-and-fixes-files)
-         * [Customize configuration](#customize-configuration)
-<!--te-->
+
+- [Granblue Fantasy - Beautify Honors (Web)](#granblue-fantasy---beautify-honors-web)
+  - [Table of contents](#table-of-contents)
+  - [Notice](#notice)
+  - [How it works](#how-it-works)
+  - [How to develop](#how-to-develop)
+    - [Project setup](#project-setup)
+      - [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
+      - [Compiles and minifies for production](#compiles-and-minifies-for-production)
+    - [Lints and fixes files](#lints-and-fixes-files)
+      - [Customize configuration](#customize-configuration)
 
 ## Notice
 
@@ -39,9 +40,11 @@ And use another integer variable n<sub>i</sub> to represent the number of battle
 We want to get exact honors with minimum number of battles (more efficient), so the corresponding integer programming problem is:
 
 <!-- Minimize\ \displaystyle\sum_{i} n_i -->
+
 ![formula](https://render.githubusercontent.com/render/math?math=Minimize%5C%20%5Cdisplaystyle%5Csum_%7Bi%7D%20n_i)
 
 <!-- Subject\ to\ \displaystyle\sum_{i} h_i\times n_i -->
+
 ![formula](https://render.githubusercontent.com/render/math?math=Subject%5C%20to%5C%20%5Cdisplaystyle%5Csum_%7Bi%7D%20h_i%5Ctimes%20n_i%20%3D%20expected%5C_honor)
 
 Additionally, we can add additional constraints to the integer variable n<sub>i</sub> to limit the maximum number of each battle. e.g.,
