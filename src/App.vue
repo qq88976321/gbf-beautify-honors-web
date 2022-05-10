@@ -384,15 +384,27 @@ table.editable-table td {
 .action-col {
   width: 40%;
 }
+.action-col input {
+  /* reset inherited width */
+  width: 100%;
+}
 
 .honors-col {
   width: 20%;
   text-align: right;
 }
+.honors-col input {
+  /* reset inherited width */
+  width: 100%;
+}
 
 .max-times-col {
   width: 20%;
   text-align: right;
+}
+.max-times-col input {
+  /* reset inherited width */
+  width: 100%;
 }
 
 .optimal-times-col {
