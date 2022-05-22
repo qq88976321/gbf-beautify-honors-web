@@ -1,62 +1,11 @@
 <template>
   <div>
-    <!-- As a heading -->
-    <b-navbar variant="primary" type="dark">
-      <b-navbar-brand tag="h1" class="mb-0"
-        >Granblue Fantasy - Beautify Honors</b-navbar-brand
-      >
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <b-navbar-brand
-          href="https://github.com/qq88976321/gbf-beautify-honors-web"
-        >
-          <b-icon icon="github"></b-icon>
-        </b-navbar-brand>
-      </b-navbar-nav>
-    </b-navbar>
-
+    <AppNavbar title="Granblue Fantasy - Beautify Honors"> </AppNavbar>
     <b-container>
-      <div class="form-group-container">
-        <b-form-group
-          :state="currentHonorsState"
-          :invalid-feedback="currentHonorsInvalidFeedback"
-          label="Current Honors"
-          label-for="current-honors"
-        >
-          <b-form-input
-            type="number"
-            id="current-honors"
-            :state="currentHonorsState"
-            v-model.lazy.number="currentHonors"
-          />
-        </b-form-group>
-        <b-form-group
-          :state="expectedHonorsState"
-          :invalid-feedback="expectedHonorsInvalidFeedback"
-          label="Expected Honors"
-          label-for="expected-honors"
-        >
-          <b-form-input
-            type="number"
-            id="expected-honors"
-            :state="expectedHonorsState"
-            v-model.lazy.number="expectedHonors"
-          />
-        </b-form-group>
-        <b-form-group
-          :state="diffHonorsState"
-          :invalid-feedback="diffHonorsInvalidFeedback"
-          label="How many honors do you need to get"
-          label-for="diff-honors"
-        >
-          <b-form-input
-            disabled
-            id="diff-honors"
-            :state="diffHonorsState"
-            :value="diffHonors"
-          ></b-form-input>
-        </b-form-group>
-      </div>
+      <HonorForm
+        :prop-expected-honors.sync="expectedHonors"
+        :prop-current-honors.sync="currentHonors"
+      ></HonorForm>
 
       <div class="table-container">
         <b-button
@@ -97,6 +46,9 @@ import { BButton, BIconTrash } from "bootstrap-vue";
 import GLPK from "glpk.js";
 import { v4 as uuidv4 } from "uuid";
 
+import AppNavbar from "./components/AppNavbar.vue";
+import HonorForm from "./components/HonorForm.vue";
+
 export default {
   async created() {
     this.glpk = await GLPK();
@@ -106,46 +58,12 @@ export default {
     BEditableTable,
     BButton,
     BIconTrash,
+    AppNavbar,
+    HonorForm,
   },
   computed: {
     diffHonors() {
       return this.expectedHonors - this.currentHonors;
-    },
-    currentHonorsState() {
-      if (this.currentHonors >= 0 && this.currentHonors < 100000000000) {
-        return true;
-      }
-      return false;
-    },
-    currentHonorsInvalidFeedback() {
-      if (this.currentHonors < 0) {
-        return "Expected honors must be a positive integer";
-      }
-      if (this.currentHonors >= 100000000000) {
-        return "Expected honors must be less than 100 billion.";
-      }
-      return "";
-    },
-    expectedHonorsState() {
-      if (this.expectedHonors >= 0 && this.expectedHonors < 100000000000) {
-        return true;
-      }
-      return false;
-    },
-    expectedHonorsInvalidFeedback() {
-      if (this.expectedHonors < 0) {
-        return "Expected honors must be a positive integer";
-      }
-      if (this.expectedHonors >= 100000000000) {
-        return "Expected honors must be less than 100 billion.";
-      }
-      return "";
-    },
-    diffHonorsState() {
-      return this.hasSolution;
-    },
-    diffHonorsInvalidFeedback() {
-      return "There is no solution to achieve the expected honors. Please relax the constraints and try again.";
     },
   },
   data() {
@@ -154,6 +72,7 @@ export default {
       hasSolution: false,
       currentHonors: 0,
       expectedHonors: 0,
+      // diffHonors: 0,
       fields: [
         // A virtual column that doesn't exist in items
         { key: "delete", label: "" },
@@ -269,7 +188,8 @@ export default {
       this.rowUpdate = { id: data.id, action: "delete" };
     },
     async solve() {
-      const honorDiff = this.expectedHonors - this.currentHonors;
+      // const honorDiff = this.expectedHonors - this.currentHonors;
+      const honorDiff = this.diffHonors;
 
       const lp = {
         name: "LP",
@@ -328,10 +248,7 @@ export default {
     },
   },
   watch: {
-    currentHonors: async function () {
-      await this.solve();
-    },
-    expectedHonors: async function () {
+    diffHonors: async function () {
       await this.solve();
     },
     items: async function () {
