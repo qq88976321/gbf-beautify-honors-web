@@ -179,9 +179,6 @@ export default {
       this.rowUpdate = { id: data.id, action: "delete" };
     },
     async solve() {
-      // const honorDiff = this.expectedHonors - this.currentHonors;
-      const honorDiff = this.propDiffHonors;
-
       const lp = {
         name: "LP",
         generals: this.items.map((item) => item.id),
@@ -200,7 +197,11 @@ export default {
               name: item.id,
               coef: item.honors,
             })),
-            bnds: { type: this.glpk.GLP_FX, ub: honorDiff, lb: honorDiff },
+            bnds: {
+              type: this.glpk.GLP_FX,
+              ub: this.propDiffHonors,
+              lb: this.propDiffHonors,
+            },
           },
           ...this.items.map((item) => ({
             name: `max times of ${item.id}, action name=${item.action}`,
@@ -222,15 +223,11 @@ export default {
         .solve(lp)
         .then((res) => {
           if (res.result.status == this.glpk.GLP_OPT) {
-            console.log("Optimal solution found");
-
             this.optimalTimes = this.items.map(
               (item) => res.result.vars[item.id]
             );
             this.hasSolution = true;
           } else {
-            console.log(`No optimal solution, status = ${res.result.status}`);
-
             this.optimalTimes = this.items.map(() => "-");
             this.hasSolution = false;
           }
