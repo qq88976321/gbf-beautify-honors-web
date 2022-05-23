@@ -31,6 +31,7 @@ export default {
   props: {
     propCurrentHonors: [Number, String],
     propExpectedHonors: [Number, String],
+    propHasSolution: Boolean,
   },
   computed: {
     currentHonors: {
@@ -53,7 +54,7 @@ export default {
       return this.expectedHonors - this.currentHonors;
     },
     diffHonorsState() {
-      return this.hasSolution;
+      return this.propHasSolution;
     },
     diffHonorsInvalidFeedback() {
       return "There is no solution to achieve the expected honors. Please relax the constraints and try again.";
