@@ -1,0 +1,76 @@
+.form-group-container {
+  margin-top: 20px;
+}
+
+.table-container {
+  margin-top: 20px;
+}
+
+table.editable-table {
+  margin-top: 10px;
+}
+
+table.editable-table thead {
+  background-color: aliceblue;
+  font-weight: bold;
+}
+
+table.editable-table td {
+  vertical-align: middle;
+}
+
+.editable-table .data-cell {
+  padding: 8px;
+  display: block;
+}
+
+.remove-icon {
+  color: red;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.action-col {
+  width: 40%;
+}
+.action-col input {
+  /* reset inherited width */
+  width: 100%;
+}
+
+.honors-col {
+  width: 20%;
+  text-align: right;
+}
+.honors-col input {
+  /* reset inherited width */
+  width: 100%;
+}
+
+.max-times-col {
+  width: 20%;
+  text-align: right;
+}
+.max-times-col input {
+  /* reset inherited width */
+  width: 100%;
+}
+
+.optimal-times-col {
+  width: 20%;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* Remove Arrows/Spinners */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
