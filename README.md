@@ -21,7 +21,8 @@ A static web page to help you figure out how to beautify honors in the Guild War
     - [Project setup](#project-setup)
       - [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
       - [Compiles and minifies for production](#compiles-and-minifies-for-production)
-    - [Lints and fixes files](#lints-and-fixes-files)
+      - [Lints and fixes files](#lints-and-fixes-files)
+      - [Release](#release)
       - [Customize configuration](#customize-configuration)
 
 ## Notice
@@ -57,6 +58,7 @@ Additionally, we can add additional constraints to the integer variable n<sub>i<
 
 ```sh
 npm install
+npm run prepare
 ```
 
 #### Compiles and hot-reloads for development
@@ -71,10 +73,16 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
+#### Lints and fixes files
 
 ```sh
 npm run lint
+```
+
+#### Release
+
+```sh
+npm run release
 ```
 
 #### Customize configuration
