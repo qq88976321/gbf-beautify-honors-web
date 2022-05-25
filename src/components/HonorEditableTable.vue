@@ -1,8 +1,32 @@
 <template>
   <div class="table-container">
-    <b-button variant="primary" class="button-add-action" @click="handleAdd()"
-      >Add Action</b-button
+    <b-row align-h="between">
+      <b-col>
+        <b-button variant="primary" @click="handleAdd()"> Add Action </b-button>
+      </b-col>
+      <b-col>
+        <b-button
+          class="float-right"
+          variant="danger"
+          v-b-modal.confirm-restore-default-modal
+        >
+          Restore Default Actions
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-modal
+      id="confirm-restore-default-modal"
+      centered
+      title="Confirmation"
+      ok-variant="danger"
+      ok-title="Yes"
+      cancel-title="No"
+      @ok="handleRestoreDefault()"
     >
+      This action cannot be undone. Are you sure you want to restore to the
+      default actions?
+    </b-modal>
+
     <b-editable-table
       :rowUpdate="rowUpdate"
       bordered
@@ -172,6 +196,9 @@ export default {
           maxTimes: 10,
         },
       };
+    },
+    handleRestoreDefault() {
+      this.items = defaultItems;
     },
     handleDelete(data) {
       this.rowUpdate = { id: data.id, action: "delete" };
