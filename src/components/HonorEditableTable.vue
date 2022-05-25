@@ -111,8 +111,6 @@ export default {
   data() {
     return {
       glpk: null,
-      currentHonors: 0,
-      expectedHonors: 0,
       fields: [
         // A virtual column that doesn't exist in items
         { key: "delete", label: "" },
@@ -179,6 +177,11 @@ export default {
       this.rowUpdate = { id: data.id, action: "delete" };
     },
     async solve() {
+      if (!this.glpk) {
+        // FIXME: still initializing glpk
+        return;
+      }
+
       const lp = {
         name: "LP",
         generals: this.items.map((item) => item.id),
@@ -235,12 +238,23 @@ export default {
         .catch((err) => console.log(err));
     },
   },
+  mounted() {
+    if (localStorage.items) {
+      try {
+        this.items = JSON.parse(localStorage.items);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  },
   watch: {
     propDiffHonors: async function () {
-      console.log(this.propDiffHonors);
       await this.solve();
     },
-    items: async function () {
+    items: async function (newItem) {
+      const jsonItems = JSON.stringify(newItem);
+      localStorage.items = jsonItems;
+
       await this.solve();
     },
     hasSolution: function () {

@@ -36,8 +36,24 @@ export default {
     return {
       currentHonors: 0,
       expectedHonors: 0,
-      hasSolution: false,
+      hasSolution: null,
     };
+  },
+  mounted() {
+    if (localStorage.currentHonors) {
+      this.currentHonors = localStorage.currentHonors;
+    }
+    if (localStorage.expectedHonors) {
+      this.expectedHonors = localStorage.expectedHonors;
+    }
+  },
+  watch: {
+    currentHonors(newCurrentHonors) {
+      localStorage.currentHonors = newCurrentHonors;
+    },
+    expectedHonors(newExpectedHonors) {
+      localStorage.expectedHonors = newExpectedHonors;
+    },
   },
 };
 </script>
