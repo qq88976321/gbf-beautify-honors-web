@@ -44,6 +44,17 @@
         ></b-icon>
       </template>
 
+      <!-- TODO: how to better show user what is max times? -->
+      <!-- A custom formatted header cell for field 'maxTimes' -->
+      <template #head(maxTimes)="data">
+        <span
+          v-b-tooltip.hover
+          title="Max acceptable times of this action."
+          style="text-decoration: underline dotted"
+          >{{ data.label }}</span
+        >
+      </template>
+
       <!-- A virtual column to show optimal value-->
       <template #cell(optimal)="data">
         {{ optimalTimes[data.index] }}
