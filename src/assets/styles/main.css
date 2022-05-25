@@ -27,7 +27,6 @@ table.editable-table td {
 .remove-icon {
   color: red;
   cursor: pointer;
-  font-size: 20px;
 }
 
 .action-col {

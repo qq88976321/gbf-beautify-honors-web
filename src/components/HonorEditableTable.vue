@@ -37,10 +37,11 @@
     >
       <!-- A virtual column to show delete button-->
       <template #cell(delete)="data">
-        <BIconTrash
+        <b-icon
+          icon="trash"
           class="remove-icon"
           @click="handleDelete(data)"
-        ></BIconTrash>
+        ></b-icon>
       </template>
 
       <!-- A virtual column to show optimal value-->
@@ -53,7 +54,6 @@
 
 <script>
 import BEditableTable from "bootstrap-vue-editable-table";
-import { BButton, BIconTrash } from "bootstrap-vue";
 import GLPK from "glpk.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -115,8 +115,6 @@ export default {
   },
   components: {
     BEditableTable,
-    BButton,
-    BIconTrash,
   },
   props: {
     propDiffHonors: [Number, String],
