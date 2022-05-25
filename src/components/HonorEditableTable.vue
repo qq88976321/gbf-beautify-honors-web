@@ -44,6 +44,16 @@
         ></b-icon>
       </template>
 
+      <!-- A custom formatted header cell for field 'honors' -->
+      <template #head(honors)="data">
+        <span
+          v-b-tooltip.hover
+          title="The exact honor earned from this action."
+          style="text-decoration: underline dotted"
+          >{{ data.label }}</span
+        >
+      </template>
+
       <!-- TODO: how to better show user what is max times? -->
       <!-- A custom formatted header cell for field 'maxTimes' -->
       <template #head(maxTimes)="data">
