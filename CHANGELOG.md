@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.2...v0.1.3) (2022-05-28)
+
+
+### Features
+
+* add honors tooltip ([61ccb84](https://github.com/qq88976321/gbf-beautify-honors-web/commit/61ccb84ae7d82d3b28466c904a16097ee398fa2f))
+* add local storage to store client data ([e3025ed](https://github.com/qq88976321/gbf-beautify-honors-web/commit/e3025ed3b16154aca280c5ed304d0c8c964185dd))
+* add max time tooltip ([87e6c59](https://github.com/qq88976321/gbf-beautify-honors-web/commit/87e6c591790e3ebb29dd087dfc0f90996bedb034))
+* add restore default button ([ae3acaa](https://github.com/qq88976321/gbf-beautify-honors-web/commit/ae3acaa85c476af0d7c986c4bb4bc149a5e50a15))
+
+
+### Bug Fixes
+
+* typo ([9561c6c](https://github.com/qq88976321/gbf-beautify-honors-web/commit/9561c6cc1f55cbca59e42310d6235c73f8be4183))
+
 ### [0.1.2](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.1...v0.1.2) (2022-05-24)
 
 ### 0.1.1 (2022-05-23)
