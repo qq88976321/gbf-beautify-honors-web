@@ -117,7 +117,7 @@ let defaultItems = [
   },
   {
     id: uuidv4(),
-    action: "Meat Beast EX+ (1 summon +)",
+    action: "Meat Beast EX+ (1 summon + attack only)",
     honors: 80810,
     maxTimes: 30,
   },
