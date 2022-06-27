@@ -88,12 +88,6 @@ let defaultItems = [
   {
     id: uuidv4(),
     action: "Eyeball H (0 button)",
-    honors: 6000,
-    maxTimes: 10,
-  },
-  {
-    id: uuidv4(),
-    action: "Eyeball VH (0 button)",
     honors: 8000,
     maxTimes: 10,
   },
