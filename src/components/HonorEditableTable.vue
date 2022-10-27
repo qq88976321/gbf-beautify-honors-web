@@ -162,19 +162,17 @@ export default {
         {
           key: "honors",
           label: "Honors",
-          type: "number",
-          min: "0",
-          max: "5000000",
+          type: "text",
+          formatter: this.formatPositiveInteger,
           editable: true,
           class: "honors-col",
         },
         {
           key: "maxTimes",
           label: "Max times",
-          type: "number",
-          min: "0",
-          max: "1000",
+          type: "text",
           editable: true,
+          formatter: this.formatPositiveInteger,
           placeholder: "Enter Max times...",
           class: "max-times-col",
         },
@@ -195,6 +193,11 @@ export default {
     };
   },
   methods: {
+    formatPositiveInteger(e) {
+      return String(e)
+        .replace(/[^0-9]/g, "")
+        .substring(0, 9);
+    },
     handleInput() {},
     handleAdd() {
       const id = uuidv4();

@@ -1,15 +1,11 @@
 <template>
   <div class="form-group-container">
-    <b-form-group
-      :state="honorsState"
-      :invalid-feedback="honorsInvalidFeedback"
-      :label="label"
-      :label-for="label"
-    >
+    <b-form-group :label="label" :label-for="label">
+      <!-- use text type and formatter to avoid scientific notification -->
       <b-form-input
-        type="number"
+        type="text"
         :id="label"
-        :state="honorsState"
+        :formatter="formatHonors"
         v-model.lazy.number="honors"
       />
     </b-form-group>
@@ -22,6 +18,13 @@ export default {
     label: [String],
     propHonors: [Number, String],
   },
+  methods: {
+    formatHonors(e) {
+      return String(e)
+        .replace(/[^0-9]/g, "")
+        .substring(0, 12);
+    },
+  },
   computed: {
     honors: {
       get() {
@@ -32,19 +35,7 @@ export default {
       },
     },
     honorsState() {
-      if (this.propHonors >= 0 && this.propHonors < 100000000000) {
-        return true;
-      }
-      return false;
-    },
-    honorsInvalidFeedback() {
-      if (this.propHonors < 0) {
-        return "Expected honors must be a positive integer.";
-      }
-      if (this.propHonors >= 100000000000) {
-        return "Expected honors must be less than 100 billion.";
-      }
-      return "";
+      return /^\d+$/.test(this.propHonors);
     },
   },
 };

@@ -60,16 +60,3 @@ table.editable-table td {
   text-align: right;
   font-weight: bold;
 }
-
-/* Remove Arrows/Spinners */
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
