@@ -39,7 +39,7 @@ export default {
     },
     honorsInvalidFeedback() {
       if (this.propHonors < 0) {
-        return "Expected honors must be a positive integer";
+        return "Expected honors must be a positive integer.";
       }
       if (this.propHonors >= 100000000000) {
         return "Expected honors must be less than 100 billion.";

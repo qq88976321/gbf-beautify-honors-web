@@ -7,6 +7,7 @@
 
     <b-form-group
       :state="diffHonorsState"
+      valid-feedback="There is a solution."
       :invalid-feedback="diffHonorsInvalidFeedback"
       label="How many honors do you need to get"
       label-for="diff-honors"
