@@ -6,17 +6,17 @@
     </HonorFormInput>
 
     <b-form-group
-      :state="diffHonorsState"
       valid-feedback="There is a solution."
       :invalid-feedback="diffHonorsInvalidFeedback"
       label="How many honors do you need to get"
       label-for="diff-honors"
     >
       <b-form-input
-        disabled
+        readonly
         id="diff-honors"
         :state="diffHonorsState"
         :value="diffHonors"
+        v-bind:class="this.propHasSolution ? 'success' : 'danger'"
       ></b-form-input>
     </b-form-group>
   </div>

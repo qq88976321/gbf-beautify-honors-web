@@ -302,7 +302,7 @@ export default {
     },
     hasSolution: function () {
       if (this.hasSolution) {
-        this.fields[this.fields.length - 1].variant = "info";
+        this.fields[this.fields.length - 1].variant = "success";
       } else {
         this.fields[this.fields.length - 1].variant = "danger";
       }
