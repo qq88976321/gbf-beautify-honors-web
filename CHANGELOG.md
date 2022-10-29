@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.3...v0.1.4) (2022-10-29)
+
+
+### Features
+
+* delete Eyeball VH battle ([fb1015a](https://github.com/qq88976321/gbf-beautify-honors-web/commit/fb1015a0dbe5e869a818328767afca4c5495f2cc))
+* limit number input format ([12c7dce](https://github.com/qq88976321/gbf-beautify-honors-web/commit/12c7dcefcf2bf801c9728ef00ff459030ac26731))
+* use same color for the readonly input field as for the table ([2bf98f3](https://github.com/qq88976321/gbf-beautify-honors-web/commit/2bf98f3de8386fd29f8bb2050667b409dd7a5474))
+
+
+### Bug Fixes
+
+* typo ([9c11cf1](https://github.com/qq88976321/gbf-beautify-honors-web/commit/9c11cf17f8d494467ff9ed58be50dc698916f883))
+
 ### [0.1.3](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.2...v0.1.3) (2022-05-28)
 
 
