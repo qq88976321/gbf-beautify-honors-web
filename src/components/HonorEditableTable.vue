@@ -265,7 +265,7 @@ export default {
         ],
       };
 
-      return this.glpk
+      this.glpk
         .solve(lp)
         .then((res) => {
           if (res.result.status == this.glpk.GLP_OPT) {
