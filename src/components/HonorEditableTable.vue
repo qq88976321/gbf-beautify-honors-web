@@ -273,12 +273,20 @@ export default {
             (item) => res.result.vars[item.id]
           );
           this.hasSolution = true;
+
+          // debug log
+          var logStr = [];
+          this.items.forEach((item, index) => {
+            const times = this.optimalTimes[index];
+            logStr.push(`${item.honors} * ${times}`);
+          });
+          console.debug(logStr.join(" + "));
         } else {
           this.optimalTimes = this.items.map(() => "-");
           this.hasSolution = false;
         }
       } catch (err) {
-        console.log(err);
+        console.err(err);
       }
     },
   },
