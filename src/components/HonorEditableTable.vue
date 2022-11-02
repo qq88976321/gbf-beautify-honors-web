@@ -265,20 +265,21 @@ export default {
         ],
       };
 
-      this.glpk
-        .solve(lp)
-        .then((res) => {
-          if (res.result.status == this.glpk.GLP_OPT) {
-            this.optimalTimes = this.items.map(
-              (item) => res.result.vars[item.id]
-            );
-            this.hasSolution = true;
-          } else {
-            this.optimalTimes = this.items.map(() => "-");
-            this.hasSolution = false;
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const res = await this.glpk.solve(lp);
+
+        if (res.result.status == this.glpk.GLP_OPT) {
+          this.optimalTimes = this.items.map(
+            (item) => res.result.vars[item.id]
+          );
+          this.hasSolution = true;
+        } else {
+          this.optimalTimes = this.items.map(() => "-");
+          this.hasSolution = false;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   mounted() {
