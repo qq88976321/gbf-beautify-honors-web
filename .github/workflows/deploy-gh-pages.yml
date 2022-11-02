@@ -2,9 +2,8 @@ name: GitHub Pages
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
+    tags:
+      - "**"
 
 jobs:
   deploy:
@@ -28,7 +27,6 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
-      - run: npm run lint
       - run: npm run build
 
       - name: deploy
