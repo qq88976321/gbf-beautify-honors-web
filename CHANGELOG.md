@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.4...v0.1.5) (2022-11-02)
+
+
+### Features
+
+* add boarder for readonly field ([5a0fcca](https://github.com/qq88976321/gbf-beautify-honors-web/commit/5a0fcca30341f1ee3acf0e3ac5328a5b8df9632f))
+* improve debug log ([7a1c455](https://github.com/qq88976321/gbf-beautify-honors-web/commit/7a1c4555b9c11b626001b6fa2cc6998cfbda880e))
+
+
+### Bug Fixes
+
+* don't need to return promise ([97e5948](https://github.com/qq88976321/gbf-beautify-honors-web/commit/97e5948a5a7e9e6d24c193b7d24dfe547ca5ec10))
+
 ### [0.1.4](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.3...v0.1.4) (2022-10-29)
 
 
