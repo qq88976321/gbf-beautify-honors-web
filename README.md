@@ -89,7 +89,9 @@ npm run test:unit
 #### Release
 
 ```sh
-npm run release
+npm run release -- --release-as patch
+npm run release -- --release-as minor
+npm run release -- --release-as major
 ```
 
 #### Customize configuration
