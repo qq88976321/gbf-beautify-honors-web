@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.5...v0.1.6) (2023-07-17)
+
+
+### Features
+
+* update ex+ honor from 80800 to 88000 ([5a2233d](https://github.com/qq88976321/gbf-beautify-honors-web/commit/5a2233d2b4fa332a805ca3e0cb279c31addb6e2b))
+
 ### [0.1.5](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.4...v0.1.5) (2022-11-02)
 
 
