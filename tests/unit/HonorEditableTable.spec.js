@@ -39,8 +39,8 @@ describe("HonorEditableTable.vue", () => {
       8000 * 10 +
       21400 * 30 +
       50578 * 30 +
-      80800 * 30 +
-      80810 * 30 +
+      88000 * 30 +
+      88010 * 30 +
       1 * 10;
     const wrapper = shallowMount(HonorEditableTable, {
       propsData: { propDiffHonors },
