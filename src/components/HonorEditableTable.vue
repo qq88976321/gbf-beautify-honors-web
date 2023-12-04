@@ -100,7 +100,7 @@ let defaultItems = [
   {
     id: uuidv4(),
     action: "Meat Beast EX (0 button)",
-    honors: 50578,
+    honors: 50577,
     maxTimes: 30,
   },
   {
