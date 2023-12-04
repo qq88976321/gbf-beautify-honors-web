@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.7...v0.1.8) (2023-12-04)
+
+
+### Bug Fixes
+
+* **ex:** fix default value changes ([efc9bce](https://github.com/qq88976321/gbf-beautify-honors-web/commit/efc9bcec035ce5f65bbf089d0bd6224dd91deb39)), closes [#1](https://github.com/qq88976321/gbf-beautify-honors-web/issues/1)
+
 ### [0.1.7](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.6...v0.1.7) (2023-07-18)
 
 ### [0.1.6](https://github.com/qq88976321/gbf-beautify-honors-web/compare/v0.1.5...v0.1.6) (2023-07-17)
