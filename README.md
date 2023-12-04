@@ -41,17 +41,19 @@ And use another integer variable n<sub>i</sub> to represent the number of battle
 
 We want to get exact honors with minimum number of battles (more efficient), so the corresponding integer programming problem is:
 
-<!-- Minimize\ \displaystyle\sum_{i} n_i -->
+```math
+Minimize\ \displaystyle\sum_{i} n_i
+```
 
-![formula](https://render.githubusercontent.com/render/math?math=Minimize%5C%20%5Cdisplaystyle%5Csum_%7Bi%7D%20n_i)
-
-<!-- Subject\ to\ \displaystyle\sum_{i} h_i\times n_i -->
-
-![formula](https://render.githubusercontent.com/render/math?math=Subject%5C%20to%5C%20%5Cdisplaystyle%5Csum_%7Bi%7D%20h_i%5Ctimes%20n_i%20%3D%20expected%5C_honor)
+```math
+Subject\ to\ \displaystyle\sum_{i} h_i\times n_i
+```
 
 Additionally, we can add additional constraints to the integer variable n<sub>i</sub> to limit the maximum number of each battle. e.g.,
 
-![formula](https://render.githubusercontent.com/render/math?math=0%E2%89%A4n_i%E2%89%A410)
+```math
+0 \leq n_i \leq 10
+```
 
 ## How to develop
 
